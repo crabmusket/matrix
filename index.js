@@ -41,18 +41,28 @@ function generateWrongAnswers(n, problem) {
   var possibilities =
     cartesianProduct([
         problem.unusedShapes.slice(),
-        problem.usedBackgrounds.slice()
+        problem.usedBackgrounds.slice(),
     ])
     .concat(cartesianProduct([
         problem.usedShapes.slice(),
-        problem.unusedBackgrounds.slice()
+        problem.unusedBackgrounds.slice(),
+    ]))
+    .concat(cartesianProduct([
+        problem.usedShapes.slice(),
+        problem.usedBackgrounds.slice(),
     ]));
-  return pickRandom(n, possibilities).map(function(answer) {
-    return {
-      shape: answer[0],
-      background: answer[1],
-    };
-  });
+  var wrong = possibilities
+    .map(function(answer) {
+      return {
+        shape: answer[0],
+        background: answer[1],
+      };
+    })
+    .filter(function(answer) {
+      return !(answer.shape === problem.answer.shape
+        && answer.background === problem.answer.background);
+    });
+  return pickRandom(n, wrong);
 }
 
 function renderShapeProblem(problem) {
