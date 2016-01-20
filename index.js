@@ -1,4 +1,4 @@
-var allShapes = ['triangle', 'square', 'circle', 'diamond'];
+var allShapes = ['triangle', 'square', 'circle', 'diamond', 'rectangle'];
 var allBackgrounds = ['bisected', 'half full', 'quarter full', 'blank', 'single dot'];
 
 function generateShapeProblem(n) {
@@ -38,7 +38,7 @@ function generateShapeProblem(n) {
 }
 
 function generateWrongAnswers(n, problem) {
-  var possibilities =
+  var wrong =
     cartesianProduct([
         problem.unusedShapes.slice(),
         problem.usedBackgrounds.slice(),
@@ -47,22 +47,28 @@ function generateWrongAnswers(n, problem) {
         problem.usedShapes.slice(),
         problem.unusedBackgrounds.slice(),
     ]))
-    .concat(cartesianProduct([
+    .map(toAnswer);
+
+  var duplicates =
+    cartesianProduct([
         problem.usedShapes.slice(),
         problem.usedBackgrounds.slice(),
-    ]));
-  var wrong = possibilities
-    .map(function(answer) {
-      return {
-        shape: answer[0],
-        background: answer[1],
-      };
-    })
+    ])
+    .map(toAnswer)
     .filter(function(answer) {
       return !(answer.shape === problem.answer.shape
         && answer.background === problem.answer.background);
     });
-  return pickRandom(n, wrong);
+
+  var numDuplicates = Math.floor(n/3);
+  return pickRandom(n - numDuplicates, wrong).concat(pickRandom(numDuplicates, duplicates));
+
+  function toAnswer(wrong) {
+    return {
+      shape: wrong[0],
+      background: wrong[1],
+    };
+  }
 }
 
 function renderShapeProblem(problem) {
