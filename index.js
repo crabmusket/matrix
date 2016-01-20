@@ -72,7 +72,8 @@ function renderShapeProblem(problem) {
 }
 
 function renderAnswers(answers) {
-  return '<ol>' + answers.map(renderAnswer).join('') + '</ol>';
+  var shuffledAnswers = pickRandom(answers.length, answers.slice());
+  return '<ol>' + shuffledAnswers.map(renderAnswer).join('') + '</ol>';
 
   function renderAnswer(answer) {
     return '<li>a ' + renderShape(answer) + (answer.correct ? ' (correct)' : '') + '</li>';
