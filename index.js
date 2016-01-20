@@ -1,5 +1,5 @@
 var allShapes = ['triangle', 'square', 'circle', 'diamond', 'rectangle'];
-var allBackgrounds = ['bisected', 'half full', 'quarter full', 'blank', 'single dot'];
+var allBackgrounds = ['single line', 'half full', 'quarter full', 'blank', 'single dot', 'cross'];
 
 function generateShapeProblem(n) {
   var unusedShapes = allShapes.slice();
