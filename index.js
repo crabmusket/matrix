@@ -6,15 +6,10 @@ function generateShapeProblem(n) {
   var unusedBackgrounds = allBackgrounds.slice()
   var usedShapes = pickRandom(n, unusedShapes);
   var usedBackgrounds = pickRandom(n, unusedBackgrounds);
-  var cells = [];
-  for (var i = 0; i < n; i++) {
-    for (var j = 0; j < n; j++) {
-      cells.push({
-        shape: usedShapes[i],
-        background: usedBackgrounds[j],
-      });
-    }
-  }
+  var cells = cartesianProduct([
+      usedShapes,
+      usedBackgrounds,
+  ]).map(makeAnswer);
   var answer = cells[randomInt(cells.length)];
   answer.correct = true;
 
@@ -40,21 +35,21 @@ function generateShapeProblem(n) {
 function generateWrongAnswers(n, problem) {
   var wrong =
     cartesianProduct([
-        problem.unusedShapes.slice(),
-        problem.usedBackgrounds.slice(),
+        problem.unusedShapes,
+        problem.usedBackgrounds,
     ])
     .concat(cartesianProduct([
-        problem.usedShapes.slice(),
-        problem.unusedBackgrounds.slice(),
+        problem.usedShapes,
+        problem.unusedBackgrounds,
     ]))
-    .map(toAnswer);
+    .map(makeAnswer);
 
   var duplicates =
     cartesianProduct([
-        problem.usedShapes.slice(),
-        problem.usedBackgrounds.slice(),
+        problem.usedShapes,
+        problem.usedBackgrounds,
     ])
-    .map(toAnswer)
+    .map(makeAnswer)
     .filter(function(answer) {
       return !(answer.shape === problem.answer.shape
         && answer.background === problem.answer.background);
@@ -62,13 +57,13 @@ function generateWrongAnswers(n, problem) {
 
   var numDuplicates = Math.floor(n/3);
   return pickRandom(n - numDuplicates, wrong).concat(pickRandom(numDuplicates, duplicates));
+}
 
-  function toAnswer(wrong) {
-    return {
-      shape: wrong[0],
-      background: wrong[1],
-    };
-  }
+function makeAnswer(values) {
+  return {
+    shape: values[0],
+    background: values[1],
+  };
 }
 
 function renderShapeProblem(problem) {
