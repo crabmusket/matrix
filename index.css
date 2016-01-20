@@ -1,0 +1,10 @@
+em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+table td {
+  padding: 1em;
+  max-width: 10em;
+  text-align: center;
+}
