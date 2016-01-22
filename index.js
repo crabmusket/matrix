@@ -128,14 +128,14 @@ function renderShapeAsGraphics(shape) {
     mask = '<path d="M 50 0 L 0 100 L 100 100 Z" />';
     outline = '<path class="shape" d="M 50 1 L 1 99 L 99 99 Z" />';
   } else if (shape.shape === 'square') {
-    mask = '<rect x="0" y="0" width="100" height="100" />';
-    outline = '<rect class="shape" x="1" y="1" width="98" height="98" />';
+    mask = '<rect x="5" y="5" width="90" height="90" />';
+    outline = '<rect class="shape" x="6" y="6" width="88" height="88" />';
   } else if (shape.shape === 'circle') {
     mask = '<circle cx="50" cy="50" r="50" />';
     outline = '<circle class="shape" cx="50" cy="50" r="49" />';
   } else if (shape.shape === 'diamond') {
     mask = '<path d="M 50 0 L 100 50 L 50 100 L 0 50 Z" />';
-    outline = '<path class="shape" d="M 50 0 L 100 50 L 50 100 L 0 50 Z" />';
+    outline = '<path class="shape" d="M 50 1 L 99 50 L 50 99 L 1 50 Z" />';
   } else if (shape.shape === 'rectangle') {
     mask = '<rect x="25" y="0" width="50" height="100" />';
     outline = '<rect class="shape" x="25" y="1" width="50" height="98" />';
@@ -150,6 +150,7 @@ function renderShapeAsGraphics(shape) {
   } else if (shape.background === 'cross') {
     background = '<path class="background" d="M 0 0 L 100 100 Z M 100 0 L 0 100 Z" clip-path="url(#mask)" />';
   }
+
   return '<svg width="100" height="100">'
     + '<defs><clipPath id="mask">' + mask + '</clipPath></defs>'
     + background + outline
