@@ -66,7 +66,7 @@ function makeAnswer(values) {
   };
 }
 
-function renderShapeProblem(problem) {
+function renderShapeProblemAsText(problem) {
   return '<table>' + problem.matrix.map(renderMatrixRow).join('') + '</tr></table>';
 
   function renderMatrixRow(row) {
@@ -77,21 +77,21 @@ function renderShapeProblem(problem) {
     if (cell === problem.answer) {
       return '<td><em>???</em></td>';
     } else {
-      return '<td>' + renderShape(cell) + '</td>';
+      return '<td>' + renderShapeAsText(cell) + '</td>';
     }
   }
 }
 
-function renderAnswers(answers) {
+function renderAnswersAsText(answers) {
   var shuffledAnswers = pickRandom(answers.length, answers.slice());
   return '<ol>' + shuffledAnswers.map(renderAnswer).join('') + '</ol>';
 
   function renderAnswer(answer) {
-    return '<li>a ' + renderShape(answer) + (answer.correct ? ' (correct)' : '') + '</li>';
+    return '<li>a ' + renderShapeAsText(answer) + (answer.correct ? ' (correct)' : '') + '</li>';
   }
 }
 
-function renderShape(shape) {
+function renderShapeAsText(shape) {
   return '<em>' + shape.shape + '</em> with a <em>' + shape.background + '</em> background';
 }
 
@@ -130,6 +130,6 @@ function cartesianProduct(a) {
 var problem = generateShapeProblem(3);
 var wrong = generateWrongAnswers(3, problem);
 var answers = wrong.concat(problem.answer);
-document.write(renderShapeProblem(problem));
+document.write(renderShapeProblemAsText(problem));
 document.write('<p>Find the missing shape! Is it:</p>');
-document.write(renderAnswers(answers));
+document.write(renderAnswersAsText(answers));
