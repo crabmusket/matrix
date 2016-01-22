@@ -104,7 +104,7 @@ function renderAnswersAsText(answers) {
   return '<ol>' + shuffledAnswers.map(renderAnswer).join('') + '</ol>';
 
   function renderAnswer(answer) {
-    return '<li>a ' + renderShapeAsText(answer) + (answer.correct ? ' (correct)' : '') + '</li>';
+    return '<li>a ' + renderShapeAsText(answer) + '</li>';
   }
 }
 
