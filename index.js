@@ -191,6 +191,8 @@ function cartesianProduct(a) {
 var problem = generateShapeProblem(3);
 var wrong = generateWrongAnswers(3, problem);
 var answers = wrong.concat(problem.answer);
+document.write('<center>');
 document.write(renderShapeProblemAsGraphics(problem));
 document.write('<p>Find the missing shape! Is it:</p>');
 document.write(renderAnswersAsGraphics(answers));
+document.write('</center>');
