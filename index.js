@@ -1,5 +1,5 @@
 var allShapes = ['triangle', 'square', 'circle', 'diamond', 'rectangle'];
-var allBackgrounds = ['single line', 'half full', 'quarter full', 'blank', 'single dot', 'cross'];
+var allBackgrounds = ['single line', 'half full', 'quarter full', 'blank', 'cross'];
 
 function generateShapeProblem(n) {
   var unusedShapes = allShapes.slice();
@@ -82,6 +82,23 @@ function renderShapeProblemAsText(problem) {
   }
 }
 
+function renderShapeProblemAsGraphics(problem) {
+  return '<table>' + problem.matrix.map(renderMatrixRow).join('') + '</tr></table>';
+
+  function renderMatrixRow(row) {
+    return '<tr>' + row.map(renderMatrixCell).join('') + '</tr>';
+  }
+
+  function renderMatrixCell(cell) {
+    if (cell === problem.answer) {
+      return '<td><em>???</em></td>';
+    } else {
+      console.log(cell);
+      return '<td>' + renderShapeAsGraphics(cell) + '</td>';
+    }
+  }
+}
+
 function renderAnswersAsText(answers) {
   var shuffledAnswers = pickRandom(answers.length, answers.slice());
   return '<ol>' + shuffledAnswers.map(renderAnswer).join('') + '</ol>';
@@ -91,8 +108,52 @@ function renderAnswersAsText(answers) {
   }
 }
 
+function renderAnswersAsGraphics(answers) {
+  var shuffledAnswers = pickRandom(answers.length, answers.slice());
+  return '<ol class="graphics">' + shuffledAnswers.map(renderAnswer).join('') + '</ol>';
+
+  function renderAnswer(answer) {
+    return '<li>' + renderShapeAsGraphics(answer) + '</li>';
+  }
+}
+
 function renderShapeAsText(shape) {
   return '<em>' + shape.shape + '</em> with a <em>' + shape.background + '</em> background';
+}
+
+function renderShapeAsGraphics(shape) {
+  var background = '', mask = '', outline = '';
+
+  if (shape.shape === 'triangle') {
+    mask = '<path d="M 50 0 L 0 100 L 100 100 Z" />';
+    outline = '<path class="shape" d="M 50 1 L 1 99 L 99 99 Z" />';
+  } else if (shape.shape === 'square') {
+    mask = '<rect x="0" y="0" width="100" height="100" />';
+    outline = '<rect class="shape" x="1" y="1" width="98" height="98" />';
+  } else if (shape.shape === 'circle') {
+    mask = '<circle cx="50" cy="50" r="50" />';
+    outline = '<circle class="shape" cx="50" cy="50" r="49" />';
+  } else if (shape.shape === 'diamond') {
+    mask = '<path d="M 50 0 L 100 50 L 50 100 L 0 50 Z" />';
+    outline = '<path class="shape" d="M 50 0 L 100 50 L 50 100 L 0 50 Z" />';
+  } else if (shape.shape === 'rectangle') {
+    mask = '<rect x="25" y="0" width="50" height="100" />';
+    outline = '<rect class="shape" x="25" y="1" width="50" height="98" />';
+  }
+
+  if (shape.background === 'single line') {
+    background = '<path class="background" d="M 0 50 H 100 Z" clip-path="url(#mask)" />';
+  } else if (shape.background === 'half full') {
+    background = '<rect class="background" x="0" y="50" width="100" height="50" clip-path="url(#mask)" />';
+  } else if (shape.background === 'quarter full') {
+    background = '<rect class="background" x="50" y="50" width="50" height="50" clip-path="url(#mask)" />';
+  } else if (shape.background === 'cross') {
+    background = '<path class="background" d="M 0 0 L 100 100 Z M 100 0 L 0 100 Z" clip-path="url(#mask)" />';
+  }
+  return '<svg width="100" height="100">'
+    + '<defs><clipPath id="mask">' + mask + '</clipPath></defs>'
+    + background + outline
+    + '</svg>';
 }
 
 function pickRandom(n, from) {
@@ -130,6 +191,6 @@ function cartesianProduct(a) {
 var problem = generateShapeProblem(3);
 var wrong = generateWrongAnswers(3, problem);
 var answers = wrong.concat(problem.answer);
-document.write(renderShapeProblemAsText(problem));
+document.write(renderShapeProblemAsGraphics(problem));
 document.write('<p>Find the missing shape! Is it:</p>');
-document.write(renderAnswersAsText(answers));
+document.write(renderAnswersAsGraphics(answers));

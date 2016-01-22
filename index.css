@@ -8,3 +8,20 @@ table td {
   max-width: 10em;
   text-align: center;
 }
+
+.shape {
+  fill: none;
+  stroke: black;
+  stroke-width: 2;
+}
+
+.background {
+  fill: black;
+  stroke: black;
+  stroke-width: 2;
+}
+
+ol.graphics li {
+  display: inline-block;
+  margin: 1em;
+}
