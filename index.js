@@ -69,6 +69,16 @@ function makeAnswer(values) {
   };
 }
 
+function reasonForIncorrectAnswer(problem, answer) {
+  if (problem.unusedShapes.indexOf(answer.shape) > -1) {
+    return 'this shape does not appear in the puzzle!';
+  } else if (problem.unusedBackgrounds.indexOf(answer.background) > -1) {
+    return 'this background does not appear in the puzzle!';
+  } else {
+    return 'this is a duplicate!';
+  }
+}
+
 function renderShapeProblemAsText(problem) {
   return '<table>' + problem.matrix.map(renderMatrixRow).join('') + '</tr></table>';
 
@@ -120,7 +130,7 @@ function renderAnswersAsGraphics(answers) {
 }
 
 function renderShapeAsText(shape) {
-  return '<em>' + shape.shape + '</em> with a <em>' + shape.background + '</em> background';
+  return '<span><em>' + shape.shape + '</em> with a <em>' + shape.background + '</em> background</span>';
 }
 
 function renderShapeAsGraphics(shape) {
@@ -212,27 +222,38 @@ function addEventListenersToAnswers(problem, answers, onCorrect, onIncorrect) {
       if (answers[index] === problem.solution) {
         onCorrect(answerElement);
       } else {
-        onIncorrect(answerElement);
+        var reason = reasonForIncorrectAnswer(problem, answers[index]);
+        onIncorrect(answerElement, reason);
       }
     }
   }
 }
 
 function renderAnswerPickedCorrectlyAsGraphics(answerElement) {
+  answerElement.innerHTML += '<br />' + renderCongratulations();
   var svg = answerElement.querySelector('svg');
   svg.innerHTML += renderTick();
 
   function renderTick() {
     return '<path class="tick animated-stroke" d="M 10 50 L 40 80 L 90 30" />';
   }
+
+  function renderCongratulations() {
+    return '<p class="congratulations delayed fade-in">well done!</p>';
+  }
 }
 
-function renderAnswerPickedIncorrectlyAsGraphics(answerElement) {
+function renderAnswerPickedIncorrectlyAsGraphics(answerElement, reason) {
+  answerElement.innerHTML += '<br />' + renderReason(reason);
   var svg = answerElement.querySelector('svg');
   svg.innerHTML += renderCross();
 
   function renderCross() {
     return '<path class="cross animated-stroke" d="M 10 10 L 90 90 Z M 90 10 L 10 90 Z" />';
+  }
+
+  function renderReason(reason) {
+    return '<p class="reason delayed fade-in">' + reason + '</p>';
   }
 }
 

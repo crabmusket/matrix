@@ -23,6 +23,7 @@ table td {
 
 ol.graphics li {
   display: inline-block;
+  vertical-align: top;
   margin: 1em;
 }
 
@@ -47,5 +48,24 @@ ol.graphics li {
 @keyframes animate-stroke {
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+.graphics .reason, .graphics .congratulations {
+  max-width: 100px;
+}
+
+.delayed {
+  animation-delay: 0.5s !important;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: animate-fade-in 0.5s ease-in forwards;
+}
+
+@keyframes animate-fade-in {
+  to {
+    opacity: 1;
   }
 }
