@@ -93,7 +93,6 @@ function renderShapeProblemAsGraphics(problem) {
     if (cell === problem.answer) {
       return '<td><em>???</em></td>';
     } else {
-      console.log(cell);
       return '<td>' + renderShapeAsGraphics(cell) + '</td>';
     }
   }
