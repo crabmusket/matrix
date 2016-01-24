@@ -191,6 +191,56 @@ function cartesianProduct(a) {
   return o;
 }
 
+function addEventListenersToAnswers(problem, answers, onCorrect, onIncorrect) {
+  var answerElements = document.querySelectorAll('.answer');
+  for (var i = 0; i < answerElements.length; i++) {
+    var element = answerElements[i];
+    var listener = makeEventListener(element);
+    element.addEventListener('click', listener);
+  }
+
+  function makeEventListener(answerElement) {
+    // Need the wrapper function to get the correct binding of answerElement.
+    // See http://stackoverflow.com/a/750506/945863
+    return function() {
+      if (hasClass(answerElement, 'picked')) {
+        return;
+      }
+
+      answerElement.className += ' picked';
+      var index = parseInt(answerElement.getAttribute('data-answer'));
+      if (answers[index] === problem.solution) {
+        onCorrect(answerElement);
+      } else {
+        onIncorrect(answerElement);
+      }
+    }
+  }
+}
+
+function renderAnswerPickedCorrectlyAsGraphics(answerElement) {
+  var svg = answerElement.querySelector('svg');
+  svg.innerHTML += renderTick();
+
+  function renderTick() {
+    return '<path class="tick animated-stroke" d="M 10 50 L 40 80 L 90 30" />';
+  }
+}
+
+function renderAnswerPickedIncorrectlyAsGraphics(answerElement) {
+  var svg = answerElement.querySelector('svg');
+  svg.innerHTML += renderCross();
+
+  function renderCross() {
+    return '<path class="cross animated-stroke" d="M 10 10 L 90 90 Z M 90 10 L 10 90 Z" />';
+  }
+}
+
+// http://stackoverflow.com/a/5898748/945863
+function hasClass(element, cls) {
+  return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+}
+
 var problem = generateShapeProblem(3);
 var answers = generateWrongAnswersWithSolution(3, problem);
 document.write('<center>');
@@ -198,3 +248,10 @@ document.write(renderShapeProblemAsGraphics(problem));
 document.write('<p>Find the missing shape! Is it:</p>');
 document.write(renderAnswersAsGraphics(answers));
 document.write('</center>');
+
+setTimeout(function() {
+  addEventListenersToAnswers(problem, answers,
+    renderAnswerPickedCorrectlyAsGraphics,
+    renderAnswerPickedIncorrectlyAsGraphics
+  );
+});

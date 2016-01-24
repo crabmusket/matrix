@@ -25,3 +25,27 @@ ol.graphics li {
   display: inline-block;
   margin: 1em;
 }
+
+.tick {
+  fill: none;
+  stroke: green;
+  stroke-width: 3;
+}
+
+.cross {
+  fill: none;
+  stroke: red;
+  stroke-width: 3;
+}
+
+.animated-stroke {
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: animate-stroke 0.5s cubic-bezier(1, 0, 1, 1) forwards;
+}
+
+@keyframes animate-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
