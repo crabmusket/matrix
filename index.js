@@ -71,11 +71,11 @@ function makeAnswer(values) {
 
 function reasonForIncorrectAnswer(problem, answer) {
   if (problem.unusedShapes.indexOf(answer.shape) > -1) {
-    return 'this shape does not appear in the puzzle!';
+    return 'This shape does not appear in the puzzle!';
   } else if (problem.unusedBackgrounds.indexOf(answer.background) > -1) {
-    return 'this background does not appear in the puzzle!';
+    return 'This background does not appear in the puzzle!';
   } else {
-    return 'this is a duplicate!';
+    return 'This is a duplicate!';
   }
 }
 
@@ -239,7 +239,7 @@ function renderAnswerPickedCorrectlyAsGraphics(answerElement) {
   }
 
   function renderCongratulations() {
-    return '<p class="congratulations delayed fade-in">well done!</p>';
+    return '<p class="congratulations delayed fade-in">Well done!</p>';
   }
 }
 
